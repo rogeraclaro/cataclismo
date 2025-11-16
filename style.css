@@ -1,0 +1,417 @@
+/*
+Theme Name: El Meu Theme
+Theme URI: https://example.com
+Author: El Teu Nom
+Author URI: https://example.com
+Description: Un theme modern i funcional per WordPress
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: elmeutheme
+Tags: responsive, modern, clean
+*/
+
+/* Reset bàsic */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+}
+
+/* Container general */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+}
+
+.site-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.site-title:hover {
+    color: #0073aa;
+}
+
+.site-description {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Burger Menu Button */
+.burger-menu {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+}
+
+.burger-menu span {
+    width: 30px;
+    height: 3px;
+    background: #333;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.burger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 7px);
+}
+
+.burger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Overlay per tancar el menú */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.menu-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Navegació */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.current {
+    color: #0073aa;
+}
+
+/* Contingut principal */
+main {
+    padding: 40px 0;
+    min-height: 60vh;
+}
+
+/* Posts */
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+article {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+article:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.post-thumbnail img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.entry-header,
+.entry-content,
+.entry-footer {
+    padding: 20px;
+}
+
+.entry-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.entry-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.entry-title a:hover {
+    color: #0073aa;
+}
+
+.entry-meta {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.entry-content p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.read-more {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0073aa;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.read-more:hover {
+    background-color: #005177;
+}
+
+/* Single post */
+.single-post article {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.single-post .entry-title {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.single-post .post-thumbnail {
+    margin-bottom: 30px;
+}
+
+.single-post .post-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Comments */
+.comments-area {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #e5e5e5;
+}
+
+.comment-list {
+    list-style: none;
+}
+
+.comment {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.comment-author {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Sidebar */
+.sidebar {
+    margin-top: 40px;
+}
+
+.widget {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.widget-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #0073aa;
+}
+
+.widget ul {
+    list-style: none;
+}
+
+.widget ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.widget ul li:last-child {
+    border-bottom: none;
+}
+
+.widget ul li a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.widget ul li a:hover {
+    color: #0073aa;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-content p {
+    margin-bottom: 10px;
+}
+
+.footer-content a {
+    color: #0073aa;
+    text-decoration: none;
+}
+
+.footer-content a:hover {
+    text-decoration: underline;
+}
+
+/* Paginació */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.pagination a,
+.pagination span {
+    padding: 10px 15px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination a:hover,
+.pagination span.current {
+    background: #0073aa;
+    color: #fff;
+    border-color: #0073aa;
+}
+
+/* Responsive - BURGER MENU */
+@media (max-width: 1024px) {
+    .burger-menu {
+        display: flex;
+    }
+    
+    .main-navigation {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 280px;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+        padding: 80px 30px 30px;
+        z-index: 1000;
+        transition: right 0.3s ease;
+        overflow-y: auto;
+    }
+    
+    .main-navigation.active {
+        right: 0;
+    }
+    
+    .main-navigation ul {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .main-navigation ul li {
+        padding: 15px 0;
+        border-bottom: 1px solid #e5e5e5;
+    }
+    
+    .main-navigation ul li:last-child {
+        border-bottom: none;
+    }
+    
+    .main-navigation ul li a {
+        display: block;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .single-post article {
+        padding: 20px;
+    }
+    
+    .single-post .entry-title {
+        font-size: 28px;
+    }
+}
