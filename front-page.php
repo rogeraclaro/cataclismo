@@ -5,187 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?php bloginfo('name'); ?> - <?php bloginfo('description'); ?></title>
+
+    <!-- Google Fonts - Tipografia distintiva -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo+Black&family=Work+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --color-primary: #FF0033;
+            --color-secondary: #FFFF00;
+            --color-dark: #0a0a0a;
+            --color-light: #ffffff;
+            --color-accent: #00FF88;
+            --font-display: 'Bebas Neue', 'Arial Black', sans-serif;
+            --font-title: 'Archivo Black', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
-            outline: 0;
+            box-sizing: border-box;
         }
-        
+
         html, body {
             width: 100%;
             height: 100%;
-            overflow: hidden;
-        }
-        
-        /* Header amb burger menu */
-        .home-header {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: rgba(255, 0, 0, 0.5); /* DEBUG */
-            padding: 15px;
-        }
-        
-        /* Burger Menu Button - 3 BARRES BLANQUES HORITZONTALS */
-        .burger-menu {
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            width: 35px !important;
-            height: 30px !important;
-            background: rgba(0, 255, 0, 0.5) !important; /* DEBUG: verd */
-            border: 2px solid yellow !important;
-            cursor: pointer !important;
-            padding: 3px !important;
-            z-index: 10000 !important;
-            position: relative !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            overflow-x: hidden;
+            background: var(--color-dark);
+            color: var(--color-light);
         }
 
-        .burger-menu span {
-            display: block !important;
-            width: 100% !important;
-            height: 4px !important;
-            background: #ffffff !important;
-            border-radius: 2px !important;
-            transition: all 0.3s ease !important;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-        }
-
-        .burger-menu.active span:nth-child(1) {
-            transform: rotate(45deg);
-            position: absolute;
-            top: 10px;
-        }
-
-        .burger-menu.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .burger-menu.active span:nth-child(3) {
-            transform: rotate(-45deg);
-            position: absolute;
-            top: 10px;
-        }
-
-        /* Overlay */
-        .menu-overlay {
-            display: none !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
-            width: 100% !important;
-            height: 100% !important;
-            background: rgba(0,0,0,0.8) !important;
-            z-index: 9998 !important;
-            opacity: 0 !important;
-            transition: opacity 0.3s ease !important;
-        }
-
-        .menu-overlay.active {
-            display: block !important;
-            opacity: 1 !important;
-        }
-
-        /* Navigation Menu */
-        .main-navigation {
-            position: fixed !important;
-            top: 0 !important;
-            right: -100% !important;
-            width: 300px !important;
-            height: 100vh !important;
-            background: rgba(0, 0, 0, 0.95) !important;
-            backdrop-filter: blur(10px) !important;
-            box-shadow: -2px 0 20px rgba(0, 255, 255, 0.3) !important;
-            padding: 80px 30px 30px !important;
-            z-index: 10001 !important;
-            transition: right 0.4s ease !important;
-            overflow-y: auto !important;
-        }
-        
-        .main-navigation.active {
-            right: 0 !important;
-        }
-        
-        .main-navigation ul {
-            list-style: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-            display: flex !important;
-            flex-direction: column !important;
-        }
-        
-        .main-navigation ul li {
-            padding: 18px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
-        
-        .main-navigation ul li:last-child {
-            border-bottom: none;
-        }
-        
-        /* Ocultar submenus per defecte */
-        .main-navigation ul ul.sub-menu {
-            display: none !important;
-            padding-left: 20px !important;
-            margin-top: 10px !important;
-            list-style: none !important;
-        }
-        
-        /* Mostrar submenus quan tenen la classe 'open' */
-        .main-navigation ul li.submenu-open > ul.sub-menu {
-            display: block !important;
-        }
-        
-        /* Estils per items de submenú */
-        .main-navigation ul ul.sub-menu li {
-            padding: 12px 0 !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-        }
-        
-        .main-navigation ul ul.sub-menu li:last-child {
-            border-bottom: none !important;
-        }
-        
-        .main-navigation ul ul.sub-menu li a {
-            font-size: 16px !important;
-            color: #cccccc !important;
-        }
-        
-        /* Indicador de submenú */
-        .main-navigation ul li.menu-item-has-children > a:after {
-            content: ' \25BC' !important;
-            font-size: 10px !important;
-            margin-left: 8px !important;
-            transition: transform 0.3s ease !important;
-            display: inline-block !important;
-        }
-        
-        .main-navigation ul li.menu-item-has-children.submenu-open > a:after {
-            transform: rotate(180deg) !important;
-        }
-        
-        .main-navigation ul li a {
-            display: block;
-            font-size: 18px;
-            color: #ffffff;
-            text-decoration: none;
-            font-family: Arial, sans-serif;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-        
-        .main-navigation ul li a:hover {
-            color: #00ffff;
-            padding-left: 10px;
-        }
-        
+        /* ====================================
+           CANVAS SMOKE EFFECT (BACKGROUND)
+        ==================================== */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -193,45 +47,537 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            opacity: 0.6;
         }
-        
-        #content {
+
+        /* ====================================
+           BURGER MENU - TOP RIGHT
+        ==================================== */
+        .home-header {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 9999;
+            mix-blend-mode: difference;
+        }
+
+        .burger-menu {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 45px;
+            height: 35px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .burger-menu:hover {
+            transform: scale(1.1);
+        }
+
+        .burger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--color-light);
+            transition: all 0.3s ease;
+        }
+
+        .burger-menu.active span:nth-child(1) {
+            transform: rotate(45deg) translate(10px, 10px);
+        }
+
+        .burger-menu.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(10px, -10px);
+        }
+
+        /* ====================================
+           MENU OVERLAY & NAVIGATION
+        ==================================== */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9997;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .main-navigation {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: var(--color-dark);
+            border-left: 3px solid var(--color-primary);
+            padding: 100px 50px 50px;
+            z-index: 9998;
+            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            overflow-y: auto;
+        }
+
+        .main-navigation.active {
+            right: 0;
+        }
+
+        .main-navigation ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .main-navigation ul li {
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.3s ease;
+        }
+
+        .main-navigation.active ul li {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .main-navigation.active ul li:nth-child(1) { transition-delay: 0.1s; }
+        .main-navigation.active ul li:nth-child(2) { transition-delay: 0.2s; }
+        .main-navigation.active ul li:nth-child(3) { transition-delay: 0.3s; }
+        .main-navigation.active ul li:nth-child(4) { transition-delay: 0.4s; }
+        .main-navigation.active ul li:nth-child(5) { transition-delay: 0.5s; }
+
+        .main-navigation ul li a {
+            display: block;
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: var(--color-light);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .main-navigation ul li a:hover {
+            color: var(--color-primary);
+            padding-left: 20px;
+        }
+
+        .main-navigation ul li a::before {
+            content: '';
             position: absolute;
+            left: -15px;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            width: 0;
+            height: 3px;
+            background: var(--color-secondary);
+            transition: width 0.3s ease;
+        }
+
+        .main-navigation ul li a:hover::before {
+            width: 10px;
+        }
+
+        /* Submenus */
+        .main-navigation ul ul.sub-menu {
+            display: none;
+            padding-left: 30px;
+            margin-top: 15px;
+        }
+
+        .main-navigation ul li.submenu-open > ul.sub-menu {
+            display: block;
+        }
+
+        .main-navigation ul ul.sub-menu li a {
+            font-size: 24px;
+            font-family: var(--font-body);
+            font-weight: 600;
+        }
+
+        .main-navigation ul li.menu-item-has-children > a::after {
+            content: ' ↓';
+            font-size: 30px;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+
+        .main-navigation ul li.menu-item-has-children.submenu-open > a::after {
+            transform: rotate(180deg);
+        }
+
+        /* ====================================
+           HERO SECTION - MAIN CONTENT
+        ==================================== */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 80px 50px;
             z-index: 10;
-            text-align: center;
-            pointer-events: none;
         }
-        
-        #content h1 {
-            font-family: Arial, sans-serif;
-            font-size: 4em;
-            color: #00ffff;
-            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Logo/Title with glitch effect */
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(60px, 15vw, 180px);
+            color: var(--color-light);
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            line-height: 0.9;
+            margin-bottom: 30px;
+            position: relative;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% {
+                text-shadow:
+                    2px 2px 0 var(--color-primary),
+                    -2px -2px 0 var(--color-secondary);
+            }
+            25% {
+                text-shadow:
+                    -2px -2px 0 var(--color-primary),
+                    2px 2px 0 var(--color-secondary);
+            }
+            50% {
+                text-shadow:
+                    2px -2px 0 var(--color-primary),
+                    -2px 2px 0 var(--color-secondary);
+            }
+            75% {
+                text-shadow:
+                    -2px 2px 0 var(--color-primary),
+                    2px -2px 0 var(--color-secondary);
+            }
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-body);
+            font-size: clamp(18px, 3vw, 32px);
+            font-weight: 300;
+            color: var(--color-light);
+            max-width: 800px;
+            line-height: 1.6;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Highlight text */
+        .highlight {
+            background: linear-gradient(120deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* ====================================
+           SECTIONS GRID
+        ==================================== */
+        .sections-grid {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3px;
+            background: var(--color-primary);
+            margin-top: 100px;
+            z-index: 10;
+        }
+
+        .section-card {
+            background: var(--color-dark);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .section-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .section-card:hover::before {
+            left: 100%;
+        }
+
+        .section-card:hover {
+            background: rgba(255, 0, 51, 0.1);
+            transform: scale(1.02);
+        }
+
+        .section-number {
+            font-family: var(--font-display);
+            font-size: 120px;
+            color: var(--color-primary);
+            opacity: 0.2;
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            line-height: 1;
+        }
+
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 36px;
+            color: var(--color-light);
+            text-transform: uppercase;
             margin-bottom: 20px;
-            letter-spacing: 3px;
+            position: relative;
+            z-index: 2;
         }
-        
-        #content p {
-            font-family: Arial, sans-serif;
-            font-size: 1.5em;
-            color: #00dddd;
-            text-shadow: 0 0 10px #00dddd;
+
+        .section-description {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
         }
-        
+
+        .section-list {
+            list-style: none;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-list li {
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--color-light);
+            padding: 10px 0;
+            padding-left: 25px;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        /* ====================================
+           FLOATING ELEMENTS
+        ==================================== */
+        .floating-label {
+            position: fixed;
+            font-family: var(--font-display);
+            font-size: 24px;
+            color: var(--color-primary);
+            opacity: 0.3;
+            z-index: 5;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-label.label-1 {
+            top: 15%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-label.label-2 {
+            top: 60%;
+            right: 8%;
+            animation-delay: 2s;
+        }
+
+        .floating-label.label-3 {
+            bottom: 20%;
+            left: 10%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* ====================================
+           FOOTER
+        ==================================== */
+        .site-footer {
+            position: relative;
+            background: var(--color-dark);
+            border-top: 3px solid var(--color-primary);
+            padding: 80px 50px 40px;
+            z-index: 10;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+        }
+
+        .footer-brand h2 {
+            font-family: var(--font-display);
+            font-size: 48px;
+            color: var(--color-light);
+            margin-bottom: 20px;
+        }
+
+        .footer-brand p {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .footer-section h3 {
+            font-family: var(--font-title);
+            font-size: 20px;
+            color: var(--color-secondary);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            font-family: var(--font-body);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 2;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ====================================
+           RESPONSIVE
+        ==================================== */
         @media (max-width: 768px) {
-            #content h1 {
-                font-size: 2.5em;
+            .hero-section {
+                padding: 60px 30px;
             }
-            
-            #content p {
-                font-size: 1.2em;
+
+            .hero-title {
+                font-size: 60px;
+                letter-spacing: 4px;
             }
-            
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+                margin-top: 60px;
+            }
+
+            .section-card {
+                padding: 40px 30px;
+            }
+
+            .section-number {
+                font-size: 80px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
             .main-navigation {
-                width: 280px;
+                max-width: 100%;
+                padding: 80px 30px 30px;
+            }
+
+            .main-navigation ul li a {
+                font-size: 36px;
+            }
+
+            .floating-label {
+                display: none;
+            }
+
+            .site-footer {
+                padding: 60px 30px 30px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
             }
         }
     </style>
@@ -239,10 +585,18 @@
 </head>
 <body <?php body_class(); ?>>
 
-<!-- Overlay per tancar el menú -->
+<!-- Canvas container for smoke effect -->
+<div id="canvas-container"></div>
+
+<!-- Floating decorative labels -->
+<div class="floating-label label-1">PRODUCCIONES</div>
+<div class="floating-label label-2">BCN</div>
+<div class="floating-label label-3">CULTURA</div>
+
+<!-- Menu Overlay -->
 <div class="menu-overlay" id="menu-overlay"></div>
 
-<!-- Header amb Burger Menu -->
+<!-- Burger Menu Header -->
 <header class="home-header">
     <button class="burger-menu" id="burger-menu" aria-label="Toggle menu">
         <span></span>
@@ -251,16 +605,14 @@
     </button>
 </header>
 
-<!-- Navigation Menu -->
+<!-- Main Navigation -->
 <nav class="main-navigation" id="main-navigation">
     <?php
-    // DEBUG: Verificar si hi ha menú assignat
     $menu_name = 'primary';
     $locations = get_nav_menu_locations();
     $menu = isset($locations[$menu_name]) ? wp_get_nav_menu_object($locations[$menu_name]) : null;
-    
+
     if ($menu) {
-        echo '<!-- Menú trobat: ' . $menu->name . ' -->';
         wp_nav_menu(array(
             'theme_location' => 'primary',
             'menu_id' => 'primary-menu',
@@ -268,26 +620,115 @@
             'fallback_cb' => false,
         ));
     } else {
-        echo '<!-- NO s\'ha trobat cap menú assignat a primary -->';
         echo '<ul id="primary-menu">';
         echo '<li><a href="' . home_url() . '">Inici</a></li>';
-        echo '<li><a href="' . home_url('/sobre-nosaltres') . '">Sobre Nosaltres</a></li>';
+        echo '<li><a href="' . home_url('/sobre-nosaltres') . '">Qui Som</a></li>';
         echo '<li><a href="' . home_url('/serveis') . '">Serveis</a></li>';
+        echo '<li><a href="' . home_url('/artistes') . '">Artistes</a></li>';
         echo '<li><a href="' . home_url('/contacte') . '">Contacte</a></li>';
         echo '</ul>';
     }
     ?>
 </nav>
 
-<div id="canvas-container"></div>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">CATACLISMO</h1>
+        <p class="hero-subtitle">
+            <span class="highlight">Gestió i producció cultural</span> per artistes independents i alternatius.
+            Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.
+        </p>
+    </div>
+</section>
 
-<div id="content">
-    <h1><?php bloginfo('name'); ?></h1>
-    <p><?php bloginfo('description'); ?></p>
+<!-- Services Grid -->
+<div class="sections-grid">
+    <!-- Gestió i Producció -->
+    <div class="section-card">
+        <span class="section-number">01</span>
+        <h2 class="section-title">Gestió i Producció</h2>
+        <p class="section-description">
+            Elaboració de projectes de circulació internacional i gestió cultural d'artistes.
+        </p>
+        <ul class="section-list">
+            <li>Creació i elaboració de perfiles culturals d'artistes</li>
+            <li>Elaboració de projectes per al Fons de la Música</li>
+            <li>Línea de circulació a l'estranger</li>
+            <li>Gestió amb el Ministeri de Cultura, Arts i Patrimoni</li>
+            <li>Rendició de projectes i seguiment</li>
+        </ul>
+    </div>
+
+    <!-- Booking -->
+    <div class="section-card">
+        <span class="section-number">02</span>
+        <h2 class="section-title">Booking</h2>
+        <p class="section-description">
+            Gestió integral de concerts i esdeveniments per artistes de diferents disciplines.
+        </p>
+        <ul class="section-list">
+            <li>Contacte amb promotors i sales de concerts</li>
+            <li>Venda i acords per show</li>
+            <li>Cobertura de requeriments tècnics</li>
+            <li>Gestió d'allotjament de transport</li>
+            <li>Tour management</li>
+            <li>Gestió amb agències de promoció i difusió</li>
+            <li>Gestió de merchandising</li>
+            <li>Gestió de bandes suport</li>
+        </ul>
+    </div>
+
+    <!-- Experiència -->
+    <div class="section-card">
+        <span class="section-number">03</span>
+        <h2 class="section-title">Experiència</h2>
+        <p class="section-description">
+            Des del 2012 generant itineràncies artístiques a Xile, Llatinoamèrica i Europa.
+        </p>
+        <ul class="section-list">
+            <li>Gires internacionals per Europa</li>
+            <li>Projectes a Xile i Llatinoamèrica</li>
+            <li>Gestió de festivals i esdeveniments</li>
+            <li>Networking amb circuits culturals alternatius</li>
+            <li>Suport a artistes emergents i consolidats</li>
+        </ul>
+    </div>
 </div>
 
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <h2>CATACLISMO</h2>
+            <p>Producciones culturals alternatives des de Barcelona. Gestionem artistes independents i creem ponts culturals entre continents.</p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Contacte</h3>
+            <p>Barcelona, Catalunya</p>
+            <a href="mailto:info@cataclismoproducciones.com">info@cataclismoproducciones.com</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Segueix-nos</h3>
+            <a href="#" target="_blank">Instagram</a>
+            <a href="#" target="_blank">Facebook</a>
+            <a href="#" target="_blank">SoundCloud</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; <?php echo date('Y'); ?> Cataclismo Producciones. Dissenyat amb ❤ per la cultura alternativa.</p>
+    </div>
+</footer>
+
+<!-- Three.js Smoke Effect -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+    // ====================================
+    // THREE.JS SMOKE EFFECT
+    // ====================================
     var camera, scene, renderer;
     var clock, delta;
     var smokeParticles = [];
@@ -297,29 +738,32 @@
 
     function init() {
         clock = new THREE.Clock();
-        
-        renderer = new THREE.WebGLRenderer();
+
+        renderer = new THREE.WebGLRenderer({ alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        
+
         scene = new THREE.Scene();
-        
+
         camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
         camera.position.z = 1000;
         scene.add(camera);
 
-        light = new THREE.DirectionalLight(0xffffff, 0.5);
+        // Lighting
+        var light = new THREE.DirectionalLight(0xffffff, 0.5);
         light.position.set(-1, 0, 1);
         scene.add(light);
 
+        // Smoke particles with red/yellow tint
         var smokeTexture = new THREE.TextureLoader().load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95637/Smoke-Element.png');
         var smokeMaterial = new THREE.MeshLambertMaterial({
-            color: 0x00dddd, 
-            map: smokeTexture, 
-            transparent: true
+            color: 0xff3344, // Red-ish tint
+            map: smokeTexture,
+            transparent: true,
+            opacity: 0.5
         });
         var smokeGeo = new THREE.PlaneGeometry(300, 300);
-        
-        for (var p = 0; p < 150; p++) {
+
+        for (var p = 0; p < 120; p++) {
             var particle = new THREE.Mesh(smokeGeo, smokeMaterial);
             particle.position.set(
                 Math.random() * 500 - 250,
@@ -344,7 +788,7 @@
     function evolveSmoke() {
         var sp = smokeParticles.length;
         while(sp--) {
-            smokeParticles[sp].rotation.z += (delta * 0.2);
+            smokeParticles[sp].rotation.z += (delta * 0.15);
         }
     }
 
@@ -357,165 +801,107 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
-    
-    // Burger Menu Functionality
-    console.log('=== INICI SCRIPT BURGER MENU ===');
-    
+
+    // ====================================
+    // BURGER MENU FUNCTIONALITY
+    // ====================================
     function initBurgerMenu() {
         const burgerMenu = document.getElementById('burger-menu');
         const mainNavigation = document.getElementById('main-navigation');
         const menuOverlay = document.getElementById('menu-overlay');
-        
-        console.log('Burger element:', burgerMenu);
-        console.log('Nav element:', mainNavigation);
-        console.log('Overlay element:', menuOverlay);
-        
-        if (!burgerMenu) {
-            console.error('ERROR: No s\'ha trobat el burger-menu!');
+
+        if (!burgerMenu || !mainNavigation || !menuOverlay) {
+            console.error('Menu elements not found');
             return;
         }
-        if (!mainNavigation) {
-            console.error('ERROR: No s\'ha trobat el main-navigation!');
-            return;
-        }
-        if (!menuOverlay) {
-            console.error('ERROR: No s\'ha trobat el menu-overlay!');
-            return;
-        }
-        
-        console.log('Tots els elements trobats! Afegint event listeners...');
-        
-        // Toggle menu
+
         let menuOpen = false;
-        
+
+        // Toggle menu
         burgerMenu.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log('===== BURGER CLICKED! =====');
-            console.log('Menu open?', menuOpen);
-            
+
+            menuOpen = !menuOpen;
+
             if (menuOpen) {
-                // Tancar
-                mainNavigation.style.right = '-100%';
-                menuOverlay.style.display = 'none';
-                menuOverlay.style.opacity = '0';
-                burgerMenu.querySelector('span:nth-child(1)').style.transform = 'none';
-                burgerMenu.querySelector('span:nth-child(2)').style.opacity = '1';
-                burgerMenu.querySelector('span:nth-child(3)').style.transform = 'none';
-                menuOpen = false;
-                console.log('Menú tancat');
+                burgerMenu.classList.add('active');
+                mainNavigation.classList.add('active');
+                menuOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             } else {
-                // Obrir
-                mainNavigation.style.right = '0';
-                menuOverlay.style.display = 'block';
-                setTimeout(function() {
-                    menuOverlay.style.opacity = '1';
-                }, 10);
-                burgerMenu.querySelector('span:nth-child(1)').style.transform = 'rotate(45deg) translateY(10px)';
-                burgerMenu.querySelector('span:nth-child(2)').style.opacity = '0';
-                burgerMenu.querySelector('span:nth-child(3)').style.transform = 'rotate(-45deg) translateY(-10px)';
-                menuOpen = true;
-                console.log('Menú obert');
+                burgerMenu.classList.remove('active');
+                mainNavigation.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
             }
-            
-            // Verificar després
-            setTimeout(function() {
-                const navStyles = window.getComputedStyle(mainNavigation);
-                console.log('Nav right position:', navStyles.right);
-            }, 500);
         });
-        
+
         // Close menu when clicking overlay
         menuOverlay.addEventListener('click', function() {
-            console.log('Overlay clicked - tancant menú');
-            mainNavigation.style.right = '-100%';
-            menuOverlay.style.display = 'none';
-            menuOverlay.style.opacity = '0';
-            burgerMenu.querySelector('span:nth-child(1)').style.transform = 'none';
-            burgerMenu.querySelector('span:nth-child(2)').style.opacity = '1';
-            burgerMenu.querySelector('span:nth-child(3)').style.transform = 'none';
+            burgerMenu.classList.remove('active');
+            mainNavigation.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
             menuOpen = false;
         });
-        
-        // Close menu when clicking a link
-        const menuLinks = mainNavigation.querySelectorAll('a');
-        console.log('Enllaços de menú trobats:', menuLinks.length);
-        
-        // Gestionar submenus
+
+        // Submenu toggle
         const menuItemsWithChildren = mainNavigation.querySelectorAll('.menu-item-has-children');
-        console.log('Items amb submenú:', menuItemsWithChildren.length);
-        
         menuItemsWithChildren.forEach(item => {
             const link = item.querySelector('a');
             if (link) {
                 link.addEventListener('click', function(e) {
-                    // Si té submenú, no navegar, sinó toggle
                     const submenu = item.querySelector('.sub-menu');
                     if (submenu) {
                         e.preventDefault();
-                        e.stopPropagation(); // Evitar que es propagui
+                        e.stopPropagation();
                         item.classList.toggle('submenu-open');
-                        console.log('Submenu toggled:', item.classList.contains('submenu-open'));
                     }
                 });
             }
         });
-        
-        // Tancar menú només per enllaços de submenú (no parents)
+
+        // Close menu for submenu links
         const submenuLinks = mainNavigation.querySelectorAll('.sub-menu a');
-        console.log('Enllaços de submenú trobats:', submenuLinks.length);
         submenuLinks.forEach(link => {
             link.addEventListener('click', function() {
-                console.log('Submenu link clicked - tancant menú');
-                mainNavigation.style.right = '-100%';
-                menuOverlay.style.display = 'none';
-                menuOverlay.style.opacity = '0';
-                burgerMenu.querySelector('span:nth-child(1)').style.transform = 'none';
-                burgerMenu.querySelector('span:nth-child(2)').style.opacity = '1';
-                burgerMenu.querySelector('span:nth-child(3)').style.transform = 'none';
+                burgerMenu.classList.remove('active');
+                mainNavigation.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
                 menuOpen = false;
             });
         });
-        
-        // Tancar menú per enllaços que NO tenen submenú
+
+        // Close menu for direct links
         const directLinks = mainNavigation.querySelectorAll('li:not(.menu-item-has-children) > a');
-        console.log('Enllaços directes trobats:', directLinks.length);
         directLinks.forEach(link => {
             link.addEventListener('click', function() {
-                console.log('Direct link clicked - tancant menú');
-                mainNavigation.style.right = '-100%';
-                menuOverlay.style.display = 'none';
-                menuOverlay.style.opacity = '0';
-                burgerMenu.querySelector('span:nth-child(1)').style.transform = 'none';
-                burgerMenu.querySelector('span:nth-child(2)').style.opacity = '1';
-                burgerMenu.querySelector('span:nth-child(3)').style.transform = 'none';
+                burgerMenu.classList.remove('active');
+                mainNavigation.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
                 menuOpen = false;
             });
         });
-        
+
         // Close menu on ESC key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && menuOpen) {
-                console.log('ESC pressed - tancant menú');
-                mainNavigation.style.right = '-100%';
-                menuOverlay.style.display = 'none';
-                menuOverlay.style.opacity = '0';
-                burgerMenu.querySelector('span:nth-child(1)').style.transform = 'none';
-                burgerMenu.querySelector('span:nth-child(2)').style.opacity = '1';
-                burgerMenu.querySelector('span:nth-child(3)').style.transform = 'none';
+                burgerMenu.classList.remove('active');
+                mainNavigation.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
                 menuOpen = false;
             }
         });
-        
-        console.log('Event listeners afegits correctament!');
     }
-    
-    // Intentar inicialitzar immediatament
+
+    // Initialize on DOM ready
     if (document.readyState === 'loading') {
-        console.log('Document encara carregant, esperant DOMContentLoaded...');
         document.addEventListener('DOMContentLoaded', initBurgerMenu);
     } else {
-        console.log('Document ja carregat, inicialitzant ara...');
         initBurgerMenu();
     }
 </script>
