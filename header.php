@@ -33,9 +33,15 @@ $floating_label_1 = get_field('floating_label_1');
 $floating_label_2 = get_field('floating_label_2');
 $floating_label_3 = get_field('floating_label_3');
 ?>
-<div class="floating-label label-1"><?php echo $floating_label_1 ? esc_html($floating_label_1) : 'PRODUCCIONES'; ?></div>
-<div class="floating-label label-2"><?php echo $floating_label_2 ? esc_html($floating_label_2) : 'BCN'; ?></div>
-<div class="floating-label label-3"><?php echo $floating_label_3 ? esc_html($floating_label_3) : 'CULTURA'; ?></div>
+<?php if (!empty($floating_label_1)) : ?>
+<div class="floating-label label-1"><?php echo esc_html($floating_label_1); ?></div>
+<?php endif; ?>
+<?php if (!empty($floating_label_2)) : ?>
+<div class="floating-label label-2"><?php echo esc_html($floating_label_2); ?></div>
+<?php endif; ?>
+<?php if (!empty($floating_label_3)) : ?>
+<div class="floating-label label-3"><?php echo esc_html($floating_label_3); ?></div>
+<?php endif; ?>
 <?php endif; ?>
 
 <!-- Menu Overlay -->

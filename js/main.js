@@ -371,6 +371,96 @@ function initRandomGlitchFreezes() {
 }
 
 // ====================================
+// NEON FLICKER EFFECT - LOGO PAMPALLUGUES
+// ====================================
+function initNeonFlicker() {
+    // ============================================
+    // PARÀMETRES CONFIGURABLES - MODIFICA AQUÍ!
+    // ============================================
+    const CONFIG = {
+        // Interval entre cicles de pampallugues (en segons)
+        minIntervalSeconds: 1,      // Mínim temps entre cicles
+        maxIntervalSeconds: 10,     // Màxim temps entre cicles
+
+        // Pampallugues per cicle
+        minFlickers: 4,             // Mínim nombre de pampallugues
+        maxFlickers: 5,             // Màxim nombre de pampallugues
+
+        // Duració de cada pampalluga individual
+        minFlickerDuration: 30,     // Mínim ms que dura una pampalluga (ON o OFF)
+        maxFlickerDuration: 120,    // Màxim ms que dura una pampalluga
+
+        // Pausa entre pampallugues dins del mateix cicle
+        minPauseBetween: 20,        // Mínim ms entre pampallugues
+        maxPauseBetween: 100,       // Màxim ms entre pampallugues
+    };
+    // ============================================
+
+    const heroTitles = document.querySelectorAll('.hero-title');
+    if (!heroTitles.length) return;
+
+    // Funció helper per generar número aleatori en un rang
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    // Funció que crea UN cicle complet de pampallugues
+    function createFlickerCycle() {
+        const numFlickers = Math.floor(randomInRange(CONFIG.minFlickers, CONFIG.maxFlickers + 1));
+        let flickerIndex = 0;
+
+        function doFlicker() {
+            if (flickerIndex >= numFlickers) {
+                // Cicle complet, programar el següent
+                scheduleNextCycle();
+                return;
+            }
+
+            // Duració d'aquesta pampalluga (temps invisible)
+            const flickerDuration = randomInRange(CONFIG.minFlickerDuration, CONFIG.maxFlickerDuration);
+
+            // APAGAR (fer invisible)
+            heroTitles.forEach(title => {
+                title.classList.add('neon-flicker-off');
+            });
+
+            setTimeout(() => {
+                // ENCENDRE (tornar visible)
+                heroTitles.forEach(title => {
+                    title.classList.remove('neon-flicker-off');
+                });
+
+                // Pausa abans de la següent pampalluga
+                const pauseDuration = randomInRange(CONFIG.minPauseBetween, CONFIG.maxPauseBetween);
+
+                setTimeout(() => {
+                    flickerIndex++;
+                    doFlicker(); // Següent pampalluga
+                }, pauseDuration);
+
+            }, flickerDuration);
+        }
+
+        doFlicker(); // Iniciar primer flicker del cicle
+    }
+
+    // Programar el següent cicle de pampallugues
+    function scheduleNextCycle() {
+        const nextCycleDelay = randomInRange(
+            CONFIG.minIntervalSeconds * 1000,
+            CONFIG.maxIntervalSeconds * 1000
+        );
+
+        setTimeout(() => {
+            createFlickerCycle();
+        }, nextCycleDelay);
+    }
+
+    // Iniciar el primer cicle
+    scheduleNextCycle();
+}
+
+// ====================================
 // INITIALIZE ALL ON DOM READY
 // ====================================
 function initAll() {
@@ -384,6 +474,9 @@ function initAll() {
 
     // GLOBAL: Initialize burger menu on all pages
     initBurgerMenu();
+
+    // GLOBAL: Initialize neon flicker effect on all hero-titles
+    initNeonFlicker();
 
     // Home page specific initializations
     if (isHomePage) {

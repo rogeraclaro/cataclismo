@@ -214,7 +214,7 @@ acf_add_local_field_group(array(
             'type' => 'text',
             'instructions' => 'Text de l\'etiqueta flotant superior esquerra',
             'required' => 0,
-            'default_value' => 'PRODUCCIONES',
+            'default_value' => '',
         ),
         array(
             'key' => 'field_floating_label_2',
@@ -223,7 +223,7 @@ acf_add_local_field_group(array(
             'type' => 'text',
             'instructions' => 'Text de l\'etiqueta flotant dreta',
             'required' => 0,
-            'default_value' => 'BCN',
+            'default_value' => '',
         ),
         array(
             'key' => 'field_floating_label_3',
@@ -232,7 +232,7 @@ acf_add_local_field_group(array(
             'type' => 'text',
             'instructions' => 'Text de l\'etiqueta flotant inferior esquerra',
             'required' => 0,
-            'default_value' => 'CULTURA',
+            'default_value' => '',
         ),
         array(
             'key' => 'field_services_sections',
@@ -259,7 +259,7 @@ acf_add_local_field_group(array(
                     'label' => 'Títol',
                     'name' => 'section_title',
                     'type' => 'text',
-                    'placeholder' => 'Gestió i Producció',
+                    'placeholder' => '',
                     'wrapper' => array(
                         'width' => '80',
                     ),
@@ -268,8 +268,11 @@ acf_add_local_field_group(array(
                     'key' => 'field_section_description',
                     'label' => 'Descripció',
                     'name' => 'section_description',
-                    'type' => 'textarea',
-                    'rows' => 2,
+                    'type' => 'wysiwyg',
+                    'tabs' => 'all',
+                    'toolbar' => 'full',
+                    'media_upload' => 0,
+                    'delay' => 0,
                 ),
                 array(
                     'key' => 'field_section_list',
@@ -296,6 +299,133 @@ acf_add_local_field_group(array(
                 'param' => 'page_type',
                 'operator' => '==',
                 'value' => 'front_page',
+            ),
+        ),
+    ),
+    'menu_order' => 0,
+    'position' => 'normal',
+    'style' => 'default',
+    'label_placement' => 'top',
+    'instruction_placement' => 'label',
+));
+
+// ====================================
+// ADVANCED CUSTOM FIELDS - OPTIONS PAGE
+// ====================================
+if( function_exists('acf_add_options_page') ) {
+
+    acf_add_options_page(array(
+        'page_title'    => 'Configuració del Footer',
+        'menu_title'    => 'Footer',
+        'menu_slug'     => 'footer-settings',
+        'capability'    => 'edit_posts',
+        'icon_url'      => 'dashicons-admin-generic',
+        'position'      => 60,
+        'redirect'      => false
+    ));
+
+}
+
+// ====================================
+// ADVANCED CUSTOM FIELDS - FOOTER SETTINGS
+// ====================================
+acf_add_local_field_group(array(
+    'key' => 'group_footer_content',
+    'title' => 'Contingut del Footer',
+    'fields' => array(
+        // BRAND SECTION
+        array(
+            'key' => 'field_footer_brand_title',
+            'label' => 'Títol Brand',
+            'name' => 'footer_brand_title',
+            'type' => 'text',
+            'instructions' => 'Títol principal del footer (per defecte: CATACLISMO)',
+            'required' => 0,
+            'default_value' => 'CATACLISMO',
+        ),
+        array(
+            'key' => 'field_footer_brand_description',
+            'label' => 'Descripció Brand',
+            'name' => 'footer_brand_description',
+            'type' => 'wysiwyg',
+            'instructions' => 'Descripció de Cataclismo al footer',
+            'required' => 0,
+            'rows' => 3,
+            'default_value' => 'Producciones culturals alternatives des de Barcelona. Gestionem artistes independents i creem ponts culturals entre continents.',
+        ),
+
+        // CONTACT SECTION
+        array(
+            'key' => 'field_footer_contact_title',
+            'label' => 'Títol Contacte',
+            'name' => 'footer_contact_title',
+            'type' => 'text',
+            'instructions' => 'Títol de la secció de contacte',
+            'required' => 0,
+            'default_value' => 'Contacte',
+        ),
+        array(
+            'key' => 'field_footer_contact_location',
+            'label' => 'Ubicació',
+            'name' => 'footer_contact_location',
+            'type' => 'wysiwyg',
+            'instructions' => 'Ciutat/ubicació',
+            'required' => 0,
+            'default_value' => 'Barcelona, Catalunya',
+        ),
+        array(
+            'key' => 'field_footer_contact_email',
+            'label' => 'Email de Contacte',
+            'name' => 'footer_contact_email',
+            'type' => 'email',
+            'instructions' => 'Adreça de correu electrònic',
+            'required' => 0,
+            'default_value' => 'info@cataclismoproducciones.com',
+        ),
+
+        // SOCIALS SECTION
+        array(
+            'key' => 'field_footer_socials_title',
+            'label' => 'Títol Xarxes Socials',
+            'name' => 'footer_socials_title',
+            'type' => 'text',
+            'instructions' => 'Títol de la secció de xarxes socials',
+            'required' => 0,
+            'default_value' => 'Segueix-nos',
+        ),
+        array(
+            'key' => 'field_footer_social_links',
+            'label' => 'Enllaços de Xarxes Socials',
+            'name' => 'footer_social_links',
+            'type' => 'repeater',
+            'instructions' => 'Afegeix els enllaços de xarxes socials',
+            'required' => 0,
+            'layout' => 'table',
+            'button_label' => 'Afegir Xarxa Social',
+            'sub_fields' => array(
+                array(
+                    'key' => 'field_social_name',
+                    'label' => 'Nom',
+                    'name' => 'social_name',
+                    'type' => 'text',
+                    'placeholder' => 'Instagram',
+                ),
+                array(
+                    'key' => 'field_social_url',
+                    'label' => 'URL',
+                    'name' => 'social_url',
+                    'type' => 'url',
+                    'placeholder' => 'https://instagram.com/...',
+                ),
+            ),
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param' => 'options_page',
+                'operator' => '==',
+                'value' => 'footer-settings',
             ),
         ),
     ),

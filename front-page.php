@@ -53,7 +53,7 @@ if (have_rows('services_sections')) :
         <?php endif; ?>
 
         <?php if ($section_description) : ?>
-        <p class="section-description"><?php echo esc_html($section_description); ?></p>
+        <div class="section-description"><?php echo wp_kses_post($section_description); ?></div>
         <?php endif; ?>
 
         <?php if (have_rows('section_list')) : ?>
