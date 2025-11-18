@@ -69,13 +69,34 @@ function elmeutheme_widgets_init() {
         'after_title'   => '</h2>',
     ));
 
+    // Footer Widget Areas
     register_sidebar(array(
-        'name'          => esc_html__('Footer 1', 'elmeutheme'),
-        'id'            => 'footer-1',
-        'description'   => esc_html__('Afegeix widgets al footer.', 'elmeutheme'),
-        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'name'          => esc_html__('Footer - Brand', 'elmeutheme'),
+        'id'            => 'footer-brand',
+        'description'   => esc_html__('Secció principal del footer amb títol i descripció de Cataclismo.', 'elmeutheme'),
+        'before_widget' => '<div id="%1$s" class="footer-brand %2$s">',
         'after_widget'  => '</div>',
-        'before_title'  => '<h3 class="widget-title">',
+        'before_title'  => '<h2>',
+        'after_title'   => '</h2>',
+    ));
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer - Contacte', 'elmeutheme'),
+        'id'            => 'footer-contacte',
+        'description'   => esc_html__('Secció de contacte del footer.', 'elmeutheme'),
+        'before_widget' => '<div id="%1$s" class="footer-section %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3>',
+        'after_title'   => '</h3>',
+    ));
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer - Xarxes Socials', 'elmeutheme'),
+        'id'            => 'footer-socials',
+        'description'   => esc_html__('Secció de xarxes socials del footer.', 'elmeutheme'),
+        'before_widget' => '<div id="%1$s" class="footer-section %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h3>',
         'after_title'   => '</h3>',
     ));
 }
@@ -88,6 +109,15 @@ function elmeutheme_scripts() {
 
     // Script de navegació
     wp_enqueue_script('elmeutheme-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '1.0', true);
+
+    // Three.js library (CDN) - disponible a totes les pàgines
+    wp_enqueue_script('threejs', 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js', array(), 'r128', true);
+
+    // Anime.js library (CDN - versió 3.2.1 més estable) - disponible a totes les pàgines
+    wp_enqueue_script('animejs', 'https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js', array(), '3.2.1', true);
+
+    // Main.js (depends on Three.js and Anime.js) - disponible a totes les pàgines
+    wp_enqueue_script('cataclismo-main', get_template_directory_uri() . '/js/main.js', array('threejs', 'animejs'), '1.1.0', true);
 
     // Comments reply
     if (is_singular() && comments_open() && get_option('thread_comments')) {
@@ -176,6 +206,33 @@ acf_add_local_field_group(array(
             'required' => 0,
             'rows' => 3,
             'default_value' => 'Gestió i producció cultural per artistes independents i alternatius. Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.',
+        ),
+        array(
+            'key' => 'field_floating_label_1',
+            'label' => 'Etiqueta Flotant 1',
+            'name' => 'floating_label_1',
+            'type' => 'text',
+            'instructions' => 'Text de l\'etiqueta flotant superior esquerra',
+            'required' => 0,
+            'default_value' => 'PRODUCCIONES',
+        ),
+        array(
+            'key' => 'field_floating_label_2',
+            'label' => 'Etiqueta Flotant 2',
+            'name' => 'floating_label_2',
+            'type' => 'text',
+            'instructions' => 'Text de l\'etiqueta flotant dreta',
+            'required' => 0,
+            'default_value' => 'BCN',
+        ),
+        array(
+            'key' => 'field_floating_label_3',
+            'label' => 'Etiqueta Flotant 3',
+            'name' => 'floating_label_3',
+            'type' => 'text',
+            'instructions' => 'Text de l\'etiqueta flotant inferior esquerra',
+            'required' => 0,
+            'default_value' => 'CULTURA',
         ),
         array(
             'key' => 'field_services_sections',
