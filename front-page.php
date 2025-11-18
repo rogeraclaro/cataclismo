@@ -13,10 +13,11 @@
 
     <style>
         :root {
-            --color-primary: #FF0033;
-            --color-secondary: #FFFF00;
-            --color-dark: #0a0a0a;
+            --color-primary: #f4624e;
+            --color-secondary: #e8c547;
+            --color-dark: #0d0f12;
             --color-light: #ffffff;
+            --color-gray: #6b7280;
             --color-accent: #00FF88;
             --font-display: 'Bebas Neue', 'Arial Black', sans-serif;
             --font-title: 'Archivo Black', sans-serif;
@@ -47,7 +48,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.6;
+            opacity: 0.85;
         }
 
         /* ====================================
@@ -245,7 +246,7 @@
             width: 100%;
         }
 
-        /* Logo/Title with glitch effect */
+        /* Logo/Title with GLITCH EFFECT - Simplified approach */
         .hero-title {
             font-family: var(--font-display);
             font-size: clamp(60px, 15vw, 180px);
@@ -255,30 +256,140 @@
             line-height: 0.9;
             margin-bottom: 30px;
             position: relative;
-            animation: glitch 3s infinite;
+            display: inline-block;
+            animation: glitch-skew 2s infinite;
         }
 
-        @keyframes glitch {
-            0%, 100% {
-                text-shadow:
-                    2px 2px 0 var(--color-primary),
-                    -2px -2px 0 var(--color-secondary);
-            }
-            25% {
-                text-shadow:
-                    -2px -2px 0 var(--color-primary),
-                    2px 2px 0 var(--color-secondary);
-            }
-            50% {
-                text-shadow:
-                    2px -2px 0 var(--color-primary),
-                    -2px 2px 0 var(--color-secondary);
-            }
-            75% {
-                text-shadow:
-                    -2px 2px 0 var(--color-primary),
-                    2px -2px 0 var(--color-secondary);
-            }
+        .hero-title::before,
+        .hero-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            letter-spacing: 8px;
+        }
+
+        .hero-title::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff0000;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            animation: glitch-anim-1 2s infinite linear alternate-reverse;
+        }
+
+        .hero-title::after {
+            left: -2px;
+            text-shadow: 2px 0 #0000ff;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            animation: glitch-anim-2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            10% { transform: skew(0deg); }
+            11% { transform: skew(-2deg); }
+            12% { transform: skew(0deg); }
+            90% { transform: skew(0deg); }
+            91% { transform: skew(1deg); }
+            92% { transform: skew(0deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        @keyframes glitch-anim-1 {
+            0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); }
+            5% { clip-path: polygon(0 15%, 100% 15%, 100% 18%, 0 18%); }
+            10% { clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%); }
+            15% { clip-path: polygon(0 52%, 100% 52%, 100% 59%, 0 59%); }
+            20% { clip-path: polygon(0 8%, 100% 8%, 100% 14%, 0 14%); }
+            25% { clip-path: polygon(0 33%, 100% 33%, 100% 37%, 0 37%); }
+            30% { clip-path: polygon(0 71%, 100% 71%, 100% 78%, 0 78%); }
+            35% { clip-path: polygon(0 1%, 100% 1%, 100% 3%, 0 3%); }
+            40% { clip-path: polygon(0 44%, 100% 44%, 100% 49%, 0 49%); }
+            45% { clip-path: polygon(0 44%, 100% 44%, 100% 49%, 0 49%); }
+            50% { clip-path: polygon(0 87%, 100% 87%, 100% 92%, 0 92%); }
+            55% { clip-path: polygon(0 22%, 100% 22%, 100% 28%, 0 28%); }
+            60% { clip-path: polygon(0 61%, 100% 61%, 100% 65%, 0 65%); }
+            65% { clip-path: polygon(0 9%, 100% 9%, 100% 12%, 0 12%); }
+            70% { clip-path: polygon(0 38%, 100% 38%, 100% 42%, 0 42%); }
+            75% { clip-path: polygon(0 76%, 100% 76%, 100% 81%, 0 81%); }
+            80% { clip-path: polygon(0 76%, 100% 76%, 100% 81%, 0 81%); }
+            85% { clip-path: polygon(0 3%, 100% 3%, 100% 7%, 0 7%); }
+            90% { clip-path: polygon(0 55%, 100% 55%, 100% 60%, 0 60%); }
+            95% { clip-path: polygon(0 91%, 100% 91%, 100% 95%, 0 95%); }
+            100% { clip-path: polygon(0 29%, 100% 29%, 100% 34%, 0 34%); }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% { clip-path: polygon(0 84%, 100% 84%, 100% 89%, 0 89%); }
+            5% { clip-path: polygon(0 84%, 100% 84%, 100% 89%, 0 89%); }
+            10% { clip-path: polygon(0 41%, 100% 41%, 100% 47%, 0 47%); }
+            15% { clip-path: polygon(0 6%, 100% 6%, 100% 11%, 0 11%); }
+            20% { clip-path: polygon(0 73%, 100% 73%, 100% 79%, 0 79%); }
+            25% { clip-path: polygon(0 27%, 100% 27%, 100% 31%, 0 31%); }
+            30% { clip-path: polygon(0 27%, 100% 27%, 100% 31%, 0 31%); }
+            35% { clip-path: polygon(0 94%, 100% 94%, 100% 98%, 0 98%); }
+            40% { clip-path: polygon(0 48%, 100% 48%, 100% 54%, 0 54%); }
+            45% { clip-path: polygon(0 13%, 100% 13%, 100% 17%, 0 17%); }
+            50% { clip-path: polygon(0 63%, 100% 63%, 100% 68%, 0 68%); }
+            55% { clip-path: polygon(0 63%, 100% 63%, 100% 68%, 0 68%); }
+            60% { clip-path: polygon(0 19%, 100% 19%, 100% 24%, 0 24%); }
+            65% { clip-path: polygon(0 82%, 100% 82%, 100% 88%, 0 88%); }
+            70% { clip-path: polygon(0 36%, 100% 36%, 100% 41%, 0 41%); }
+            75% { clip-path: polygon(0 4%, 100% 4%, 100% 8%, 0 8%); }
+            80% { clip-path: polygon(0 69%, 100% 69%, 100% 75%, 0 75%); }
+            85% { clip-path: polygon(0 69%, 100% 69%, 100% 75%, 0 75%); }
+            90% { clip-path: polygon(0 24%, 100% 24%, 100% 29%, 0 29%); }
+            95% { clip-path: polygon(0 89%, 100% 89%, 100% 93%, 0 93%); }
+            100% { clip-path: polygon(0 51%, 100% 51%, 100% 56%, 0 56%); }
+        }
+
+        @keyframes glitch-animation-1-OLD {
+            0% { clip-path: inset(91px 0 calc(100% - 42px) 0); }
+            5% { clip-path: inset(13px 0 calc(100% - 46px) 0); }
+            10% { clip-path: inset(52px 0 calc(100% - 59px) 0); }
+            15% { clip-path: inset(38px 0 calc(100% - 32px) 0); }
+            20% { clip-path: inset(57px 0 calc(100% - 39px) 0); }
+            25% { clip-path: inset(124px 0 calc(100% - 65px) 0); }
+            30% { clip-path: inset(125px 0 calc(100% - 70px) 0); }
+            35% { clip-path: inset(123px 0 calc(100% - 44px) 0); }
+            40% { clip-path: inset(54px 0 calc(100% - 141px) 0); }
+            45% { clip-path: inset(31px 0 calc(100% - 148px) 0); }
+            50% { clip-path: inset(1px 0 calc(100% - 10px) 0); }
+            55% { clip-path: inset(125px 0 calc(100% - 16px) 0); }
+            60% { clip-path: inset(7px 0 calc(100% - 131px) 0); }
+            65% { clip-path: inset(112px 0 calc(100% - 74px) 0); }
+            70% { clip-path: inset(54px 0 calc(100% - 3px) 0); }
+            75% { clip-path: inset(107px 0 calc(100% - 37px) 0); }
+            80% { clip-path: inset(65px 0 calc(100% - 47px) 0); }
+            85% { clip-path: inset(66px 0 calc(100% - 149px) 0); }
+            90% { clip-path: inset(146px 0 calc(100% - 39px) 0); }
+            95% { clip-path: inset(147px 0 calc(100% - 122px) 0); }
+            100% { clip-path: inset(148px 0 calc(100% - 129px) 0); }
+        }
+
+        @keyframes glitch-animation-2 {
+            0% { clip-path: inset(93px 0 calc(100% - 35px) 0); }
+            5% { clip-path: inset(46px 0 calc(100% - 76px) 0); }
+            10% { clip-path: inset(46px 0 calc(100% - 44px) 0); }
+            15% { clip-path: inset(119px 0 calc(100% - 62px) 0); }
+            20% { clip-path: inset(61px 0 calc(100% - 111px) 0); }
+            25% { clip-path: inset(129px 0 calc(100% - 83px) 0); }
+            30% { clip-path: inset(103px 0 calc(100% - 19px) 0); }
+            35% { clip-path: inset(68px 0 calc(100% - 54px) 0); }
+            40% { clip-path: inset(61px 0 calc(100% - 16px) 0); }
+            45% { clip-path: inset(48px 0 calc(100% - 105px) 0); }
+            50% { clip-path: inset(87px 0 calc(100% - 64px) 0); }
+            55% { clip-path: inset(148px 0 calc(100% - 97px) 0); }
+            60% { clip-path: inset(19px 0 calc(100% - 2px) 0); }
+            65% { clip-path: inset(57px 0 calc(100% - 136px) 0); }
+            70% { clip-path: inset(104px 0 calc(100% - 40px) 0); }
+            75% { clip-path: inset(85px 0 calc(100% - 144px) 0); }
+            80% { clip-path: inset(92px 0 calc(100% - 59px) 0); }
+            85% { clip-path: inset(67px 0 calc(100% - 60px) 0); }
+            90% { clip-path: inset(124px 0 calc(100% - 79px) 0); }
+            95% { clip-path: inset(103px 0 calc(100% - 49px) 0); }
+            100% { clip-path: inset(32px 0 calc(100% - 109px) 0); }
         }
 
         .hero-subtitle {
@@ -307,10 +418,7 @@
 
         /* Highlight text */
         .highlight {
-            background: linear-gradient(120deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--color-light);
             font-weight: 800;
         }
 
@@ -381,7 +489,7 @@
             font-family: var(--font-body);
             font-size: 16px;
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.95);
             line-height: 1.8;
             margin-bottom: 25px;
             position: relative;
@@ -410,8 +518,9 @@
             content: '▸';
             position: absolute;
             left: 0;
-            color: var(--color-secondary);
+            color: var(--color-light);
             font-weight: bold;
+            opacity: 0.7;
         }
 
         /* ====================================
@@ -486,14 +595,14 @@
             font-family: var(--font-body);
             font-size: 16px;
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(255, 255, 255, 0.85);
             line-height: 1.8;
         }
 
         .footer-section h3 {
             font-family: var(--font-title);
             font-size: 20px;
-            color: var(--color-secondary);
+            color: var(--color-light);
             text-transform: uppercase;
             margin-bottom: 20px;
         }
@@ -502,7 +611,7 @@
         .footer-section a {
             font-family: var(--font-body);
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255, 255, 255, 0.9);
             line-height: 2;
             text-decoration: none;
             display: block;
@@ -634,67 +743,74 @@
 <!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-content">
-        <h1 class="hero-title">CATACLISMO</h1>
-        <p class="hero-subtitle">
-            <span class="highlight">Gestió i producció cultural</span> per artistes independents i alternatius.
-            Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.
-        </p>
+        <h1 class="hero-title" data-text="CATACLISMO">CATACLISMO</h1>
+        <div class="hero-subtitle">
+            <?php
+            // Get hero subtitle from ACF
+            $hero_subtitle = get_field('hero_subtitle');
+            if ($hero_subtitle) :
+                echo '<p>' . nl2br(esc_html($hero_subtitle)) . '</p>';
+            else :
+                // Fallback content si no hi ha contingut editat
+            ?>
+            <p>
+                <span class="highlight">Gestió i producció cultural</span> per artistes independents i alternatius.
+                Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.
+            </p>
+            <?php
+            endif;
+            ?>
+        </div>
     </div>
 </section>
 
-<!-- Services Grid -->
+<?php
+// Services sections from ACF
+if (have_rows('services_sections')) :
+?>
+<!-- Sections Grid -->
 <div class="sections-grid">
-    <!-- Gestió i Producció -->
+    <?php
+    while (have_rows('services_sections')) : the_row();
+        $section_number = get_sub_field('section_number');
+        $section_title = get_sub_field('section_title');
+        $section_description = get_sub_field('section_description');
+    ?>
     <div class="section-card">
-        <span class="section-number">01</span>
-        <h2 class="section-title">Gestió i Producció</h2>
-        <p class="section-description">
-            Elaboració de projectes de circulació internacional i gestió cultural d'artistes.
-        </p>
-        <ul class="section-list">
-            <li>Creació i elaboració de perfiles culturals d'artistes</li>
-            <li>Elaboració de projectes per al Fons de la Música</li>
-            <li>Línea de circulació a l'estranger</li>
-            <li>Gestió amb el Ministeri de Cultura, Arts i Patrimoni</li>
-            <li>Rendició de projectes i seguiment</li>
-        </ul>
-    </div>
+        <?php if ($section_number) : ?>
+        <div class="section-number"><?php echo esc_html($section_number); ?></div>
+        <?php endif; ?>
 
-    <!-- Booking -->
-    <div class="section-card">
-        <span class="section-number">02</span>
-        <h2 class="section-title">Booking</h2>
-        <p class="section-description">
-            Gestió integral de concerts i esdeveniments per artistes de diferents disciplines.
-        </p>
-        <ul class="section-list">
-            <li>Contacte amb promotors i sales de concerts</li>
-            <li>Venda i acords per show</li>
-            <li>Cobertura de requeriments tècnics</li>
-            <li>Gestió d'allotjament de transport</li>
-            <li>Tour management</li>
-            <li>Gestió amb agències de promoció i difusió</li>
-            <li>Gestió de merchandising</li>
-            <li>Gestió de bandes suport</li>
-        </ul>
-    </div>
+        <?php if ($section_title) : ?>
+        <h2 class="section-title"><?php echo esc_html($section_title); ?></h2>
+        <?php endif; ?>
 
-    <!-- Experiència -->
-    <div class="section-card">
-        <span class="section-number">03</span>
-        <h2 class="section-title">Experiència</h2>
-        <p class="section-description">
-            Des del 2012 generant itineràncies artístiques a Xile, Llatinoamèrica i Europa.
-        </p>
+        <?php if ($section_description) : ?>
+        <p class="section-description"><?php echo esc_html($section_description); ?></p>
+        <?php endif; ?>
+
+        <?php if (have_rows('section_list')) : ?>
         <ul class="section-list">
-            <li>Gires internacionals per Europa</li>
-            <li>Projectes a Xile i Llatinoamèrica</li>
-            <li>Gestió de festivals i esdeveniments</li>
-            <li>Networking amb circuits culturals alternatius</li>
-            <li>Suport a artistes emergents i consolidats</li>
+            <?php
+            while (have_rows('section_list')) : the_row();
+                $list_item = get_sub_field('list_item');
+                if ($list_item) :
+            ?>
+            <li><?php echo esc_html($list_item); ?></li>
+            <?php
+                endif;
+            endwhile;
+            ?>
         </ul>
+        <?php endif; ?>
     </div>
+    <?php
+    endwhile;
+    ?>
 </div>
+<?php
+endif;
+?>
 
 <!-- Footer -->
 <footer class="site-footer">
@@ -753,17 +869,17 @@
         light.position.set(-1, 0, 1);
         scene.add(light);
 
-        // Smoke particles with red/yellow tint
+        // Smoke particles - DARK & DRAMATIC (matching PDF cataclysmic aesthetic)
         var smokeTexture = new THREE.TextureLoader().load('https://s3-us-west-2.amazonaws.com/s.cdpn.io/95637/Smoke-Element.png');
         var smokeMaterial = new THREE.MeshLambertMaterial({
-            color: 0xff3344, // Red-ish tint
+            color: 0x2a3240, // Much darker gray-blue, almost black
             map: smokeTexture,
             transparent: true,
-            opacity: 0.5
+            opacity: 0.75
         });
-        var smokeGeo = new THREE.PlaneGeometry(300, 300);
+        var smokeGeo = new THREE.PlaneGeometry(350, 350);
 
-        for (var p = 0; p < 120; p++) {
+        for (var p = 0; p < 150; p++) {
             var particle = new THREE.Mesh(smokeGeo, smokeMaterial);
             particle.position.set(
                 Math.random() * 500 - 250,
@@ -903,6 +1019,71 @@
         document.addEventListener('DOMContentLoaded', initBurgerMenu);
     } else {
         initBurgerMenu();
+    }
+
+    // ====================================
+    // RANDOM GLITCH FREEZES
+    // ====================================
+    function initRandomGlitchFreezes() {
+        const title = document.querySelector('.hero-title');
+        if (!title) return;
+
+        // Crear estil dinàmic per als freezes
+        const styleEl = document.createElement('style');
+        styleEl.id = 'glitch-freeze-style';
+        document.head.appendChild(styleEl);
+
+        function createRandomFreeze() {
+            // Paràmetres aleatoris segons noves directrius
+            const startPos = Math.floor(Math.random() * 85); // 0-85%
+            const thickness = Math.floor(Math.random() * 24) + 3; // 3-26%
+            const endPos = startPos + thickness;
+            const duration = Math.random() * 2000 + 300; // 300-2300ms
+
+            // Aplicar freeze al ::before i ::after
+            const freezeCSS = `
+                .hero-title::before {
+                    animation-play-state: paused !important;
+                    clip-path: polygon(0 ${startPos}%, 100% ${startPos}%, 100% ${endPos}%, 0 ${endPos}%) !important;
+                }
+                .hero-title::after {
+                    animation-play-state: paused !important;
+                    clip-path: polygon(0 ${startPos + 5}%, 100% ${startPos + 5}%, 100% ${endPos + 5}%, 0 ${endPos + 5}%) !important;
+                }
+            `;
+
+            styleEl.textContent = freezeCSS;
+
+            // Després del freeze, tornar a l'animació normal
+            setTimeout(() => {
+                styleEl.textContent = `
+                    .hero-title::before {
+                        animation-play-state: running !important;
+                    }
+                    .hero-title::after {
+                        animation-play-state: running !important;
+                    }
+                `;
+            }, duration);
+        }
+
+        // Freeze aleatori cada 3-20 segons
+        function scheduleNextFreeze() {
+            const nextFreezeDelay = Math.random() * 17000 + 3000; // 3-20 segons
+            setTimeout(() => {
+                createRandomFreeze();
+                scheduleNextFreeze();
+            }, nextFreezeDelay);
+        }
+
+        scheduleNextFreeze();
+    }
+
+    // Inicialitzar freezes aleatoris
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRandomGlitchFreezes);
+    } else {
+        initRandomGlitchFreezes();
     }
 </script>
 

@@ -157,3 +157,96 @@ function elmeutheme_custom_colors() {
     <?php
 }
 add_action('wp_head', 'elmeutheme_custom_colors');
+
+// ====================================
+// ADVANCED CUSTOM FIELDS - HOME PAGE
+// ====================================
+if( function_exists('acf_add_local_field_group') ):
+
+acf_add_local_field_group(array(
+    'key' => 'group_home_content',
+    'title' => 'Contingut de la Home',
+    'fields' => array(
+        array(
+            'key' => 'field_hero_subtitle',
+            'label' => 'Subtítol Hero',
+            'name' => 'hero_subtitle',
+            'type' => 'textarea',
+            'instructions' => 'Text que apareix sota "CATACLISMO"',
+            'required' => 0,
+            'rows' => 3,
+            'default_value' => 'Gestió i producció cultural per artistes independents i alternatius. Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.',
+        ),
+        array(
+            'key' => 'field_services_sections',
+            'label' => 'Seccions de Serveis',
+            'name' => 'services_sections',
+            'type' => 'repeater',
+            'instructions' => 'Afegeix les seccions de serveis (Gestió, Booking, etc.)',
+            'required' => 0,
+            'layout' => 'block',
+            'button_label' => 'Afegir Secció',
+            'sub_fields' => array(
+                array(
+                    'key' => 'field_section_number',
+                    'label' => 'Número',
+                    'name' => 'section_number',
+                    'type' => 'text',
+                    'placeholder' => '01',
+                    'wrapper' => array(
+                        'width' => '20',
+                    ),
+                ),
+                array(
+                    'key' => 'field_section_title',
+                    'label' => 'Títol',
+                    'name' => 'section_title',
+                    'type' => 'text',
+                    'placeholder' => 'Gestió i Producció',
+                    'wrapper' => array(
+                        'width' => '80',
+                    ),
+                ),
+                array(
+                    'key' => 'field_section_description',
+                    'label' => 'Descripció',
+                    'name' => 'section_description',
+                    'type' => 'textarea',
+                    'rows' => 2,
+                ),
+                array(
+                    'key' => 'field_section_list',
+                    'label' => 'Llista d\'ítems',
+                    'name' => 'section_list',
+                    'type' => 'repeater',
+                    'layout' => 'table',
+                    'button_label' => 'Afegir ítem',
+                    'sub_fields' => array(
+                        array(
+                            'key' => 'field_list_item',
+                            'label' => 'Ítem',
+                            'name' => 'list_item',
+                            'type' => 'text',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param' => 'page_type',
+                'operator' => '==',
+                'value' => 'front_page',
+            ),
+        ),
+    ),
+    'menu_order' => 0,
+    'position' => 'normal',
+    'style' => 'default',
+    'label_placement' => 'top',
+    'instruction_placement' => 'label',
+));
+
+endif;
