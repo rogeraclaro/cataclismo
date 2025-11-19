@@ -310,25 +310,12 @@ acf_add_local_field_group(array(
 ));
 
 // ====================================
-// ADVANCED CUSTOM FIELDS - OPTIONS PAGE
-// ====================================
-if( function_exists('acf_add_options_page') ) {
-
-    acf_add_options_page(array(
-        'page_title'    => 'Configuració del Footer',
-        'menu_title'    => 'Footer',
-        'menu_slug'     => 'footer-settings',
-        'capability'    => 'edit_posts',
-        'icon_url'      => 'dashicons-admin-generic',
-        'position'      => 60,
-        'redirect'      => false
-    ));
-
-}
-
-// ====================================
 // ADVANCED CUSTOM FIELDS - FOOTER SETTINGS
 // ====================================
+// Ara usem pàgines normals en comptes d'Options Page
+// Això permet la traducció automàtica amb Polylang
+// Cal crear una pàgina anomenada "Footer Config" (slug: footer-config) per cada idioma
+
 acf_add_local_field_group(array(
     'key' => 'group_footer_content',
     'title' => 'Contingut del Footer',
@@ -423,9 +410,64 @@ acf_add_local_field_group(array(
     'location' => array(
         array(
             array(
-                'param' => 'options_page',
+                'param' => 'page_template',
                 'operator' => '==',
-                'value' => 'footer-settings',
+                'value' => 'template-footer-config.php',
+            ),
+        ),
+    ),
+    'menu_order' => 0,
+    'position' => 'normal',
+    'style' => 'default',
+    'label_placement' => 'top',
+    'instruction_placement' => 'label',
+));
+
+// ====================================
+// ADVANCED CUSTOM FIELDS - ARTISTES (POSTS)
+// ====================================
+acf_add_local_field_group(array(
+    'key' => 'group_artist_content',
+    'title' => 'Contingut Artista',
+    'fields' => array(
+        array(
+            'key' => 'field_artist_subtitle',
+            'label' => 'Subtítol',
+            'name' => 'artist_subtitle',
+            'type' => 'text',
+            'instructions' => 'Descripció curta de l\'artista (ex: "HARDCORE PUNK DESDE 1987")',
+            'required' => 0,
+            'placeholder' => 'Rock Stoner, Arte Urbano, etc.',
+        ),
+        array(
+            'key' => 'field_artist_image',
+            'label' => 'Imatge Principal',
+            'name' => 'artist_image',
+            'type' => 'image',
+            'instructions' => 'Imatge de l\'artista amb fons transparent (PNG recomanat)',
+            'required' => 0,
+            'return_format' => 'array',
+            'preview_size' => 'medium',
+            'library' => 'all',
+        ),
+        array(
+            'key' => 'field_artist_description',
+            'label' => 'Descripció',
+            'name' => 'artist_description',
+            'type' => 'wysiwyg',
+            'instructions' => 'Text descriptiu de l\'artista',
+            'required' => 0,
+            'tabs' => 'all',
+            'toolbar' => 'full',
+            'media_upload' => 0,
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param' => 'post_type',
+                'operator' => '==',
+                'value' => 'post',
             ),
         ),
     ),
@@ -437,3 +479,30 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+// ====================================
+// POLYLANG - REGISTER STRINGS FOR TRANSLATION
+// ====================================
+function elmeutheme_register_polylang_strings() {
+    if (function_exists('pll_register_string')) {
+        // Home page fallback
+        pll_register_string('hero_subtitle_fallback', 'Gestió i producció cultural per artistes independents i alternatius. Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.', 'Theme Cataclismo');
+        pll_register_string('hero_subtitle_highlight', 'Gestió i producció cultural', 'Theme Cataclismo');
+
+        // Footer fallback strings
+        pll_register_string('footer_contact_title_fallback', 'Contacte', 'Theme Cataclismo');
+        pll_register_string('footer_contact_location_fallback', 'Barcelona, Catalunya', 'Theme Cataclismo');
+        pll_register_string('footer_brand_title_fallback', 'CATACLISMO', 'Theme Cataclismo');
+        pll_register_string('footer_brand_description_fallback', 'Producciones culturals alternatives des de Barcelona. Gestionem artistes independents i creem ponts culturals entre continents.', 'Theme Cataclismo');
+        pll_register_string('footer_socials_title_fallback', 'Segueix-nos', 'Theme Cataclismo');
+
+        // Footer bottom text
+        pll_register_string('footer_bottom_text', 'amb ❤ des de', 'Theme Cataclismo');
+
+        // Social networks fallbacks
+        pll_register_string('social_instagram', 'Instagram', 'Theme Cataclismo');
+        pll_register_string('social_facebook', 'Facebook', 'Theme Cataclismo');
+        pll_register_string('social_soundcloud', 'SoundCloud', 'Theme Cataclismo');
+    }
+}
+add_action('init', 'elmeutheme_register_polylang_strings');

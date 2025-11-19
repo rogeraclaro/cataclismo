@@ -11,13 +11,21 @@
             if ($hero_subtitle) :
                 echo '<p>' . nl2br(esc_html($hero_subtitle)) . '</p>';
             else :
-                // Fallback content si no hi ha contingut editat
+                // Fallback content traduïble
+                if (function_exists('pll__')) {
+                    $highlight_text = pll__('Gestió i producció cultural');
+                    $full_text = pll__('Gestió i producció cultural per artistes independents i alternatius. Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.');
+                    // Replace the highlight part with span
+                    $final_text = str_replace($highlight_text, '<span class="highlight">' . $highlight_text . '</span>', $full_text);
+                    echo '<p>' . $final_text . '</p>';
+                } else {
             ?>
             <p>
                 <span class="highlight">Gestió i producció cultural</span> per artistes independents i alternatius.
                 Des de Barcelona cap al món, creant ponts entre la música, el teatre, les performances i els visuals.
             </p>
             <?php
+                }
             endif;
             ?>
         </div>

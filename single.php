@@ -1,72 +1,72 @@
 <?php get_header(); ?>
 
-<main class="single-post">
-    <div class="container">
-        <?php
-        while (have_posts()) :
-            the_post();
-        ?>
-            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-                <header class="entry-header">
-                    <h1 class="entry-title"><?php the_title(); ?></h1>
-                    <div class="entry-meta">
-                        <span class="posted-on">
-                            Publicat el <?php echo get_the_date(); ?>
-                        </span>
-                        <span class="byline">
-                            per <a href="<?php echo get_author_posts_url(get_the_author_meta('ID')); ?>">
-                                <?php the_author(); ?>
-                            </a>
-                        </span>
-                        <?php if (has_category()) : ?>
-                            <span class="cat-links">
-                                en <?php the_category(', '); ?>
-                            </span>
-                        <?php endif; ?>
-                    </div>
-                </header>
+<!-- Artist Page -->
+<main class="artist-page">
+    <?php
+    while (have_posts()) :
+        the_post();
 
-                <?php if (has_post_thumbnail()) : ?>
-                    <div class="post-thumbnail">
-                        <?php the_post_thumbnail('large'); ?>
-                    </div>
-                <?php endif; ?>
+        // Get ACF fields
+        $subtitle = get_field('artist_subtitle');
+        $artist_image = get_field('artist_image');
+        $description = get_field('artist_description');
+    ?>
 
-                <div class="entry-content">
-                    <?php
-                    the_content();
+    <article id="post-<?php the_ID(); ?>" <?php post_class('artist-content'); ?>>
 
-                    wp_link_pages(array(
-                        'before' => '<div class="page-links">' . esc_html__('Pàgines:', 'elmeutheme'),
-                        'after'  => '</div>',
-                    ));
-                    ?>
-                </div>
+        <!-- Artist Title -->
+        <div class="artist-header">
+            <h1 class="artist-title"><?php the_title(); ?></h1>
+        </div>
 
-                <footer class="entry-footer">
-                    <?php
-                    if (has_tag()) {
-                        the_tags('<div class="tags-links">Etiquetes: ', ', ', '</div>');
-                    }
-                    ?>
-                </footer>
-            </article>
+        <!-- Artist Image -->
+        <?php if ($artist_image) : ?>
+        <div class="artist-image-container">
+            <img src="<?php echo esc_url($artist_image['url']); ?>"
+                 alt="<?php echo esc_attr($artist_image['alt'] ?: get_the_title()); ?>"
+                 class="artist-image">
+        </div>
+        <?php endif; ?>
 
+        <!-- Artist Subtitle -->
+        <?php if ($subtitle) : ?>
+        <div class="artist-subtitle">
+            <h2><?php echo esc_html($subtitle); ?></h2>
+        </div>
+        <?php endif; ?>
+
+        <!-- Artist Description (if exists) -->
+        <?php if ($description) : ?>
+        <div class="artist-description">
+            <?php echo wp_kses_post($description); ?>
+        </div>
+        <?php endif; ?>
+
+        <!-- Navigation between artists -->
+        <div class="artist-navigation">
             <?php
-            // Navegació entre posts
-            the_post_navigation(array(
-                'prev_text' => '<span class="nav-subtitle">← Article anterior</span> <span class="nav-title">%title</span>',
-                'next_text' => '<span class="nav-subtitle">Article següent →</span> <span class="nav-title">%title</span>',
-            ));
-
-            // Comentaris
-            if (comments_open() || get_comments_number()) :
-                comments_template();
-            endif;
+            $prev_post = get_previous_post();
+            $next_post = get_next_post();
             ?>
 
-        <?php endwhile; ?>
-    </div>
+            <?php if ($prev_post) : ?>
+            <a href="<?php echo get_permalink($prev_post); ?>" class="nav-link nav-prev">
+                <span class="nav-arrow">←</span>
+                <span class="nav-label"><?php echo esc_html($prev_post->post_title); ?></span>
+            </a>
+            <?php endif; ?>
+
+            <?php if ($next_post) : ?>
+            <a href="<?php echo get_permalink($next_post); ?>" class="nav-link nav-next">
+                <span class="nav-label"><?php echo esc_html($next_post->post_title); ?></span>
+                <span class="nav-arrow">→</span>
+            </a>
+            <?php endif; ?>
+        </div>
+
+    </article>
+
+    <?php endwhile; ?>
 </main>
 
 <?php get_footer(); ?>

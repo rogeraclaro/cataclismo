@@ -54,6 +54,22 @@ $floating_label_3 = get_field('floating_label_3');
         <span></span>
         <span></span>
     </button>
+
+    <!-- Language Switcher -->
+    <!-- <?php if (function_exists('pll_the_languages')) : ?>
+    <div class="language-switcher">
+        <?php
+        pll_the_languages(array(
+            'show_flags' => 0,
+            'show_names' => 1,
+            'display_names_as' => 'slug',
+            'dropdown' => 0,
+            'hide_if_empty' => 0,
+            'hide_current' => 0
+        ));
+        ?>
+    </div>
+    <?php endif; ?> -->
 </header>
 
 <!-- Main Navigation -->
