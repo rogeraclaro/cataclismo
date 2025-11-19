@@ -485,6 +485,11 @@ body {
     z-index: 9999;
     background: transparent;
     box-shadow: none;
+    transition: transform 0.3s ease;
+}
+
+.site-header-global.hide-on-scroll {
+    transform: translateY(-100px);
 }
 
 .site-header-global .burger-menu {
@@ -725,6 +730,11 @@ body {
     top: 30px;
     left: 50px;
     z-index: 9999;
+    transition: transform 0.3s ease;
+}
+
+.site-logo.hide-on-scroll {
+    transform: translateY(-100px);
 }
 
 /* Ocultar site-logo a la home (ja hi ha hero-title gran) */
@@ -1759,5 +1769,13 @@ p.puja {
     .footer-content {
         grid-template-columns: 1fr;
         gap: 40px;
+    }
+
+    .site-logo .hero-title {
+        color: var(--color-dark);
+    }
+
+    .main-navigation {
+        max-width: none;
     }
 }

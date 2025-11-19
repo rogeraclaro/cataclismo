@@ -83,4 +83,32 @@
         });
     }
 
+    // Hide/Show logo and burger menu on scroll
+    const siteLogo = document.querySelector('.site-logo');
+    const siteHeader = document.querySelector('.site-header-global');
+    let lastScrollTop = 0;
+    const scrollThreshold = 100; // Píxels abans de començar a amagar
+
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        // Si estem al top de la pàgina, sempre mostrar
+        if (currentScroll < scrollThreshold) {
+            if (siteLogo) siteLogo.classList.remove('hide-on-scroll');
+            if (siteHeader) siteHeader.classList.remove('hide-on-scroll');
+        }
+        // Si fem scroll cap avall, amagar
+        else if (currentScroll > lastScrollTop) {
+            if (siteLogo) siteLogo.classList.add('hide-on-scroll');
+            if (siteHeader) siteHeader.classList.add('hide-on-scroll');
+        }
+        // Si fem scroll cap amunt, mostrar
+        else {
+            if (siteLogo) siteLogo.classList.remove('hide-on-scroll');
+            if (siteHeader) siteHeader.classList.remove('hide-on-scroll');
+        }
+
+        lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+    }, { passive: true });
+
 })();
