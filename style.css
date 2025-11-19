@@ -1447,6 +1447,10 @@ body {
     margin-top: 14px;
 }
 
+.footer-section.baixa.esq a {
+    margin-top: -11px;
+}
+
 .footer-section h3 {
     font-family: var(--font-title);
     font-size: 20px;

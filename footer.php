@@ -7,7 +7,7 @@
     ?>
     <div class="footer-content">
         <!-- Footer Contacte Section -->
-        <div class="footer-section baixa">
+        <div class="footer-section baixa esq">
             <h3><?php
                 $contact_title = $footer_id ? get_field('footer_contact_title', $footer_id) : null;
                 echo $contact_title ?: (function_exists('pll__') ? pll__('Contacte') : 'Contacte');
