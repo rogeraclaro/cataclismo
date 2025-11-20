@@ -162,9 +162,17 @@ article {
     transition: transform 0.3s, box-shadow 0;
 }
 
-article:hover {
+/* article:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+} */
+
+.page-template-default .page-title {
+    display: none;
+}
+
+.page-template-default .page-container {
+    padding: 150px 0px 100px;
 }
 
 .post-thumbnail img {
@@ -1581,7 +1589,7 @@ p.puja {
 
 .artist-subtitle h2 {
     font-family: var(--font-title);
-    font-size: clamp(24px, 4vw, 48px);
+    font-size: clamp(24px, 4vw, 38px);
     font-weight: 800;
     color: var(--color-light);
     letter-spacing: 3px;
