@@ -296,9 +296,9 @@ acf_add_local_field_group(array(
     'location' => array(
         array(
             array(
-                'param' => 'page_type',
+                'param' => 'page_template',
                 'operator' => '==',
-                'value' => 'front_page',
+                'value' => 'template-home.php',
             ),
         ),
     ),
@@ -479,6 +479,107 @@ acf_add_local_field_group(array(
 ));
 
 endif;
+
+// ====================================
+// POLYLANG + ACF - CONFIGURATION COMPLETA
+// ====================================
+
+/**
+ * PROBLEMA: Per defecte, quan tens dues pàgines (una en català i una en espanyol)
+ * que són traduccions l'una de l'altra segons Polylang, i edites els camps ACF en una,
+ * els canvis es reflecteixen a l'altra.
+ *
+ * SOLUCIÓ: Desactivar COMPLETAMENT la sincronització i còpia de camps ACF entre idiomes.
+ * Cada pàgina/post té els seus propis camps ACF independents.
+ */
+
+// 1. Evitar que Polylang copiï automàticament els post_meta d'ACF quan es crea una traducció
+add_filter('pll_copy_post_metas', 'elmeutheme_prevent_acf_copy', 10, 2);
+function elmeutheme_prevent_acf_copy($metas, $sync) {
+    if (!$sync) {
+        return $metas;
+    }
+
+    // Filtrar TOTS els camps ACF (comencen amb _ excepte alguns especials)
+    return array_filter($metas, function($meta_key) {
+        // Mantenir només metas que NO són d'ACF
+        // Els camps ACF tenen meta keys com: field_xxx, _field_xxx, o altres començant amb _
+        $is_acf = (
+            strpos($meta_key, 'field_') === 0 ||
+            strpos($meta_key, '_field_') === 0 ||
+            (strpos($meta_key, '_') === 0 && !in_array($meta_key, [
+                '_thumbnail_id',
+                '_wp_page_template',
+                '_wp_page_template',
+                '_edit_lock',
+                '_edit_last'
+            ]))
+        );
+        return !$is_acf;
+    });
+}
+
+// 2. Marcar explícitament que NO volem copiar cap meta d'ACF
+add_filter('pll_translate_post_meta', '__return_false', 999);
+
+// 3. Deshabilitar la sincronització de Polylang per camps ACF
+add_action('admin_init', 'elmeutheme_configure_polylang_acf');
+function elmeutheme_configure_polylang_acf() {
+    // Configurar Polylang per NO sincronitzar camps ACF
+    if (function_exists('PLL')) {
+        $options = get_option('polylang');
+        if (is_array($options)) {
+            // Assegurar que la sincronització està desactivada
+            $options['sync'] = array();
+            update_option('polylang', $options);
+        }
+    }
+}
+
+// 4. Assegurar que ACF utilitza sempre l'idioma correcte
+add_filter('acf/settings/current_language', 'elmeutheme_acf_current_language');
+function elmeutheme_acf_current_language($language) {
+    if (function_exists('pll_current_language')) {
+        return pll_current_language();
+    }
+    return $language;
+}
+
+// 5. Important: Quan guardem un camp ACF, assegurar que es guarda NOMÉS al post actual
+add_filter('acf/pre_save_post', 'elmeutheme_acf_save_to_correct_post', 10, 1);
+function elmeutheme_acf_save_to_correct_post($post_id) {
+    // No fer res si és una auto-save
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return $post_id;
+    }
+
+    // Retornar el post ID original sense modificar
+    // Això evita que ACF intenti guardar a traduccions
+    return $post_id;
+}
+
+// 6. CRÍTIC: Desactivar la sincronització en el moment del guardat
+add_action('save_post', 'elmeutheme_disable_sync_on_save', 1, 1);
+function elmeutheme_disable_sync_on_save($post_id) {
+    // Deshabilitar temporalment la sincronització de Polylang
+    // mentre es guarda el post per evitar que copiï els camps ACF
+    remove_action('save_post', 'pll_save_post_translations', 1000);
+}
+
+// 7. Evitar que update_post_meta sincronitzi entre traduccions
+add_filter('update_post_metadata', 'elmeutheme_prevent_meta_sync', 10, 5);
+function elmeutheme_prevent_meta_sync($check, $object_id, $meta_key, $meta_value, $prev_value) {
+    // Si estem guardant un camp ACF, evitar que Polylang el propagui
+    if (strpos($meta_key, 'field_') === 0 || strpos($meta_key, '_field_') === 0 ||
+        (strpos($meta_key, '_') === 0 && !in_array($meta_key, ['_thumbnail_id', '_wp_page_template', '_edit_lock', '_edit_last']))) {
+
+        // Deshabilitar temporalment la sincronització de Polylang per aquest meta
+        global $elmeutheme_syncing_disabled;
+        $elmeutheme_syncing_disabled = true;
+    }
+
+    return $check; // null = continuar normalment
+}
 
 // ====================================
 // POLYLANG - REGISTER STRINGS FOR TRANSLATION

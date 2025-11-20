@@ -2,8 +2,29 @@
 <footer class="site-footer">
     <?php
     // Obtenir la pàgina Footer Config de l'idioma actual
-    $footer_page = get_page_by_path('footer-config');
-    $footer_id = $footer_page ? $footer_page->ID : null;
+    $footer_id = null;
+
+    if (function_exists('pll_current_language')) {
+        // Obtenir l'idioma actual
+        $current_lang = pll_current_language();
+
+        // Buscar la pàgina footer-config en català (idioma base)
+        $footer_page_base = get_page_by_path('footer-config');
+
+        if ($footer_page_base) {
+            // Obtenir la traducció per l'idioma actual
+            $footer_id = pll_get_post($footer_page_base->ID, $current_lang);
+
+            // Si no hi ha traducció, utilitzar la pàgina base
+            if (!$footer_id) {
+                $footer_id = $footer_page_base->ID;
+            }
+        }
+    } else {
+        // Fallback: si Polylang no està actiu
+        $footer_page = get_page_by_path('footer-config');
+        $footer_id = $footer_page ? $footer_page->ID : null;
+    }
     ?>
     <div class="footer-content">
         <!-- Footer Contacte Section -->

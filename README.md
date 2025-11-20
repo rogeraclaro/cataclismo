@@ -23,6 +23,7 @@ Un theme modern, net i responsive per WordPress.
 4. Configura els menús a Aparença → Menús
 5. Afegeix widgets a Aparença → Widgets
 6. Personalitza els colors a Aparença → Personalitzar
+7. **Important**: Crea una pàgina anomenada "Footer Config" (slug: `footer-config`) per gestionar els continguts del footer (títols, xarxes socials, etc.) via ACF. Si utilitzes Polylang, crea una traducció d'aquesta pàgina per a cada idioma.
 
 ## Fitxers principals
 
