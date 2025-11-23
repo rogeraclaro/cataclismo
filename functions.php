@@ -119,6 +119,11 @@ function elmeutheme_scripts() {
     // Main.js (depends on Three.js and Anime.js) - disponible a totes les pàgines
     wp_enqueue_script('cataclismo-main', get_template_directory_uri() . '/js/main.js', array('threejs', 'animejs'), '1.1.0', true);
 
+    // Contact Form script - només a la pàgina de contacte
+    if (is_page_template('template-contact.php')) {
+        wp_enqueue_script('cataclismo-contact-form', get_template_directory_uri() . '/js/contact-form.js', array(), '1.0', true);
+    }
+
     // Comments reply
     if (is_singular() && comments_open() && get_option('thread_comments')) {
         wp_enqueue_script('comment-reply');
@@ -478,6 +483,134 @@ acf_add_local_field_group(array(
     'instruction_placement' => 'label',
 ));
 
+// ====================================
+// ADVANCED CUSTOM FIELDS - CONTACT PAGE
+// ====================================
+acf_add_local_field_group(array(
+    'key' => 'group_contact_content',
+    'title' => 'Contingut de la Pàgina de Contacte',
+    'fields' => array(
+        array(
+            'key' => 'field_contact_title',
+            'label' => 'Títol Hero',
+            'name' => 'contact_title',
+            'type' => 'text',
+            'instructions' => 'Títol principal de la secció hero (per defecte: PARLEM)',
+            'required' => 0,
+            'default_value' => 'PARLEM',
+        ),
+        array(
+            'key' => 'field_contact_subtitle',
+            'label' => 'Subtítol Hero',
+            'name' => 'contact_subtitle',
+            'type' => 'textarea',
+            'instructions' => 'Text descriptiu sota el títol',
+            'required' => 0,
+            'rows' => 2,
+            'default_value' => 'Tens un projecte? Una idea? Volem escoltar-te.',
+        ),
+        array(
+            'key' => 'field_contact_location',
+            'label' => 'Ubicació',
+            'name' => 'contact_location',
+            'type' => 'wysiwyg',
+            'instructions' => 'Ciutat/ubicació de contacte',
+            'required' => 0,
+            'tabs' => 'visual',
+            'toolbar' => 'basic',
+            'media_upload' => 0,
+            'default_value' => '<p>Barcelona, Catalunya<br>Raval Cultural District</p>',
+        ),
+        array(
+            'key' => 'field_contact_email',
+            'label' => 'Email de Contacte',
+            'name' => 'contact_email',
+            'type' => 'email',
+            'instructions' => 'Adreça de correu electrònic principal',
+            'required' => 0,
+            'default_value' => 'info@cataclismoproducciones.com',
+        ),
+        array(
+            'key' => 'field_contact_social_links',
+            'label' => 'Enllaços de Xarxes Socials',
+            'name' => 'contact_social_links',
+            'type' => 'repeater',
+            'instructions' => 'Afegeix enllaços a xarxes socials',
+            'required' => 0,
+            'layout' => 'table',
+            'button_label' => 'Afegir Xarxa Social',
+            'sub_fields' => array(
+                array(
+                    'key' => 'field_contact_social_name',
+                    'label' => 'Nom',
+                    'name' => 'social_name',
+                    'type' => 'text',
+                    'placeholder' => 'Instagram',
+                ),
+                array(
+                    'key' => 'field_contact_social_url',
+                    'label' => 'URL',
+                    'name' => 'social_url',
+                    'type' => 'url',
+                    'placeholder' => 'https://instagram.com/...',
+                ),
+            ),
+        ),
+        array(
+            'key' => 'field_contact_statement',
+            'label' => 'Frase Destacada',
+            'name' => 'contact_statement',
+            'type' => 'textarea',
+            'instructions' => 'Frase o missatge destacat a la secció d\'informació',
+            'required' => 0,
+            'rows' => 3,
+            'default_value' => 'Construïm cultura alternativa.\nProjecte a projecte.\nArtista a artista.',
+        ),
+        array(
+            'key' => 'field_contact_show_map',
+            'label' => 'Mostrar Mapa',
+            'name' => 'show_map',
+            'type' => 'true_false',
+            'instructions' => 'Mostrar secció de mapa al final de la pàgina',
+            'required' => 0,
+            'default_value' => 0,
+            'ui' => 1,
+        ),
+        array(
+            'key' => 'field_contact_map_embed',
+            'label' => 'Codi Embed del Mapa',
+            'name' => 'map_embed',
+            'type' => 'textarea',
+            'instructions' => 'Codi iframe de Google Maps o altre servei de mapes',
+            'required' => 0,
+            'rows' => 3,
+            'conditional_logic' => array(
+                array(
+                    array(
+                        'field' => 'field_contact_show_map',
+                        'operator' => '==',
+                        'value' => '1',
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'location' => array(
+        array(
+            array(
+                'param' => 'page_template',
+                'operator' => '==',
+                'value' => 'template-contact.php',
+            ),
+        ),
+    ),
+    'menu_order' => 0,
+    'position' => 'normal',
+    'style' => 'default',
+    'label_placement' => 'top',
+    'instruction_placement' => 'label',
+));
+
 endif;
 
 // ====================================
@@ -607,3 +740,90 @@ function elmeutheme_register_polylang_strings() {
     }
 }
 add_action('init', 'elmeutheme_register_polylang_strings');
+
+// ====================================
+// CONTACT FORM HANDLER
+// ====================================
+
+/**
+ * Processa el formulari de contacte i envia l'email
+ */
+function cataclismo_handle_contact_form() {
+    // Verificar nonce per seguretat
+    if (!isset($_POST['contact_nonce']) || !wp_verify_nonce($_POST['contact_nonce'], 'cataclismo_contact_form')) {
+        wp_die('Error de seguretat. Si us plau, torna a intentar-ho.');
+    }
+
+    // Sanititzar i validar dades
+    $name = sanitize_text_field($_POST['contact_name'] ?? '');
+    $email = sanitize_email($_POST['contact_email'] ?? '');
+    $subject = sanitize_text_field($_POST['contact_subject'] ?? '');
+    $message = sanitize_textarea_field($_POST['contact_message'] ?? '');
+
+    // Validacions
+    $errors = array();
+
+    if (empty($name)) {
+        $errors[] = 'El nom és obligatori.';
+    }
+
+    if (empty($email) || !is_email($email)) {
+        $errors[] = 'L\'email no és vàlid.';
+    }
+
+    if (empty($message)) {
+        $errors[] = 'El missatge és obligatori.';
+    }
+
+    // Si hi ha errors, redirigir amb missatge d'error
+    if (!empty($errors)) {
+        $error_message = implode(' ', $errors);
+        wp_redirect(add_query_arg('contact_error', urlencode($error_message), wp_get_referer()));
+        exit;
+    }
+
+    // Preparar l'email
+    $to = get_option('admin_email'); // Email de l'administrador del lloc
+
+    // També enviar a l'email configurat a ACF si existeix
+    $contact_page = get_page_by_path('contacte'); // Ajusta segons el slug de la pàgina
+    if ($contact_page) {
+        $acf_email = get_field('contact_email', $contact_page->ID);
+        if ($acf_email && is_email($acf_email)) {
+            $to = $acf_email;
+        }
+    }
+
+    $email_subject = 'Nou missatge de contacte: ' . ($subject ?: 'Sense assumpte');
+
+    $email_body = "Has rebut un nou missatge de contacte des de Cataclismo Producciones:\n\n";
+    $email_body .= "Nom: $name\n";
+    $email_body .= "Email: $email\n";
+    if ($subject) {
+        $email_body .= "Assumpte: $subject\n";
+    }
+    $email_body .= "\nMissatge:\n$message\n\n";
+    $email_body .= "---\n";
+    $email_body .= "Aquest missatge s'ha enviat des del formulari de contacte de " . get_bloginfo('name');
+
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . get_bloginfo('name') . ' <noreply@' . parse_url(home_url(), PHP_URL_HOST) . '>',
+        'Reply-To: ' . $name . ' <' . $email . '>'
+    );
+
+    // Enviar l'email
+    $sent = wp_mail($to, $email_subject, $email_body, $headers);
+
+    // Redirigir amb missatge de success o error
+    if ($sent) {
+        wp_redirect(add_query_arg('contact_success', '1', wp_get_referer()));
+    } else {
+        wp_redirect(add_query_arg('contact_error', urlencode('Error en enviar el missatge. Si us plau, intenta-ho de nou.'), wp_get_referer()));
+    }
+    exit;
+}
+
+// Hooks per processar el formulari
+add_action('admin_post_nopriv_cataclismo_contact_form', 'cataclismo_handle_contact_form');
+add_action('admin_post_cataclismo_contact_form', 'cataclismo_handle_contact_form');
